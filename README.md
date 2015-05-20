@@ -9,12 +9,17 @@ The actual application layer will be developed independent of this specification
 
 Physical Layer
 --------------
-The physical layer is based on a RS248 three wire bus (a differential pair for data and ground),
+The physical layer is based on a RS485 three wire bus (a differential pair for data and ground),
 using the *MCP2551* is used as transceiver chip.
 Since this chip is actually a CAN-transceiver,
 it has a well defined behaviour in case of collisions (no short circuits possible)
 and it allows to read back the bits which were actually on the bus while sending.
-This enables any device with a decent UART (microcontroller, raspi ...) to communicate over long distances (2000m+).
+Additionally for most regular RS485 transceivers a collision on the bus results
+in one transceiver pulling the bus while the other one pulls it high,
+effectively creating a temporary short circuit.
+Therefore using a CAN-transceiver is preferable for our bus configuration.
+
+Using a sss7modem any device with a decent UART (microcontroller, raspi ...) can communicate over long distances (2000m+).
 The data is send at 9600 Baud (aka. 9,6kbit/s) with a maximum baudrate error of +-5%,
 to ensure that even the slowest microcontroller can participate in the communication.
 A slow bitrate also necessary to keep communication and collision detection reliable over longer
