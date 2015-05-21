@@ -37,10 +37,10 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
+Title "Seidenstrasse Signaling System 7 Modem"
 Date "21 may 2015"
-Rev ""
-Comp ""
+Rev "0.2"
+Comp "Telebørken"
 Comment1 ""
 Comment2 ""
 Comment3 ""
