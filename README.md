@@ -2,6 +2,8 @@ SSS7 Modems
 ===========
 SSS7 is the **S**eidenstrasse **S**ignaling **S**ystem 7.
 
+**This is still work in progress, contact me before building hardware !**
+
 This repository contains the schematics its the hardware,
 along with a description of the physical layer and the transport layer.
 The actual application layer will be developed independent of this specification.
@@ -53,6 +55,9 @@ Therefore receiving devices should rely only on the length and the CRC sum of fr
 
 Licenses
 --------
+
+Anything in the folder hardware/libs/smisitoto_eu/ is taken from http://smisioto.no-ip.org/elettronica/kicad/kicad-en.htm The files are made avaible under the Creative Commons license rev2.5 Attribution-ShareAlike. (see https://creativecommons.org/licenses/by-sa/2.5/)
+
 
 The schematics and pcb layout files in hardware are released under the *CERN Open Hardware Licence v1.2*.
 
