@@ -1,4 +1,4 @@
-Cmp-Mod V01 Created by CvPcb (2013-may-18)-stable date = Thu 21 May 2015 04:14:00 PM CEST
+Cmp-Mod V01 Created by CvPcb (2013-may-18)-stable date = Fri 22 May 2015 12:10:17 PM CEST
 
 BeginCmp
 TimeStamp = /5557C4CE;
@@ -95,14 +95,14 @@ BeginCmp
 TimeStamp = /555DB3E7;
 Reference = IC2;
 ValeurCmp = LTV-352T;
-IdModule  = mfp_4;
+IdModule  = mfsop6;
 EndCmp
 
 BeginCmp
 TimeStamp = /555DB3D8;
 Reference = IC3;
 ValeurCmp = LTV-352T;
-IdModule  = mfp_4;
+IdModule  = mfsop6;
 EndCmp
 
 BeginCmp

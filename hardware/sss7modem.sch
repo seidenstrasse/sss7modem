@@ -774,9 +774,9 @@ Wire Wire Line
 	2900 3550 2900 3600
 Wire Wire Line
 	2900 3600 3100 3600
-Text GLabel 3100 3400 2    60   Input ~ 0
-TXDin
 Text GLabel 3100 3600 2    60   Input ~ 0
+TXDin
+Text GLabel 3100 3400 2    60   Input ~ 0
 RXDout
 Text Notes 7550 900  0    197  ~ 0
 Bus side

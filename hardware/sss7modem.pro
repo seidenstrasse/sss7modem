@@ -1,6 +1,6 @@
-update=Thu 21 May 2015 04:14:20 PM CEST
+update=Fri 22 May 2015 12:10:08 PM CEST
 version=1
-last_client=pcbnew
+last_client=cvpcb
 [general]
 version=1
 [eeschema]
@@ -44,11 +44,6 @@ LibName29=contrib
 LibName30=valves
 LibName31=dcdc
 LibName32=74hct125
-[cvpcb]
-version=1
-NetIExt=net
-[cvpcb/libraries]
-EquName1=devcms
 [pcbnew]
 version=1
 LastNetListRead=sss7modem.net
@@ -69,7 +64,6 @@ DrawSegmentWidth="    0.200000"
 BoardOutlineThickness="    0.100000"
 ModuleOutlineThickness="    0.150000"
 [pcbnew/libraries]
-LibDir=
 LibName1=sockets
 LibName2=connect
 LibName3=discret
@@ -88,3 +82,10 @@ LibName15=pga_sockets
 LibName16=valves
 LibName17=libs/smisitoto_eu/w_smd_diode
 LibName18=libs/smisitoto_eu/w_smd_dil
+LibName19=libs/mfsop6
+LibDir=
+[cvpcb]
+version=1
+NetIExt=net
+[cvpcb/libraries]
+EquName1=devcms
