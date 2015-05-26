@@ -1,6 +1,6 @@
-update=Fri 22 May 2015 12:10:08 PM CEST
+update=Wed 27 May 2015 12:40:49 AM CEST
 version=1
-last_client=cvpcb
+last_client=pcbnew
 [general]
 version=1
 [eeschema]
@@ -44,14 +44,19 @@ LibName29=contrib
 LibName30=valves
 LibName31=dcdc
 LibName32=74hct125
+[cvpcb]
+version=1
+NetIExt=net
+[cvpcb/libraries]
+EquName1=devcms
 [pcbnew]
 version=1
 LastNetListRead=sss7modem.net
 UseCmpFile=1
-PadDrill="    3.200000"
-PadDrillOvalY="    3.200000"
-PadSizeH="    4.500000"
-PadSizeV="    4.500000"
+PadDrill="    0.812800"
+PadDrillOvalY="    0.812800"
+PadSizeH="    2.000000"
+PadSizeV="    2.000000"
 PcbTextSizeV="    1.500000"
 PcbTextSizeH="    1.500000"
 PcbTextThickness="    0.300000"
@@ -62,8 +67,9 @@ SolderMaskClearance="    0.000000"
 SolderMaskMinWidth="    0.000000"
 DrawSegmentWidth="    0.200000"
 BoardOutlineThickness="    0.100000"
-ModuleOutlineThickness="    0.150000"
+ModuleOutlineThickness="    0.250000"
 [pcbnew/libraries]
+LibDir=libs
 LibName1=sockets
 LibName2=connect
 LibName3=discret
@@ -83,9 +89,6 @@ LibName16=valves
 LibName17=libs/smisitoto_eu/w_smd_diode
 LibName18=libs/smisitoto_eu/w_smd_dil
 LibName19=libs/mfsop6
-LibDir=
-[cvpcb]
-version=1
-NetIExt=net
-[cvpcb/libraries]
-EquName1=devcms
+LibName20=libs/chaosinkl_silkbot_15_00mm
+LibName21=libs/seidenstrasse_silkbot_15_00mm
+LibName22=logo_hacker_silkbot_10_00mm
