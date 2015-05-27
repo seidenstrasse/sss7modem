@@ -1,4 +1,4 @@
-update=Wed 27 May 2015 12:40:49 AM CEST
+update=Wed 27 May 2015 08:47:22 AM CEST
 version=1
 last_client=pcbnew
 [general]
@@ -57,12 +57,12 @@ PadDrill="    0.812800"
 PadDrillOvalY="    0.812800"
 PadSizeH="    2.000000"
 PadSizeV="    2.000000"
-PcbTextSizeV="    1.500000"
-PcbTextSizeH="    1.500000"
-PcbTextThickness="    0.300000"
-ModuleTextSizeV="    1.000000"
-ModuleTextSizeH="    1.000000"
-ModuleTextSizeThickness="    0.150000"
+PcbTextSizeV="    0.750000"
+PcbTextSizeH="    0.750000"
+PcbTextThickness="    0.200000"
+ModuleTextSizeV="    0.750000"
+ModuleTextSizeH="    0.750000"
+ModuleTextSizeThickness="    0.200000"
 SolderMaskClearance="    0.000000"
 SolderMaskMinWidth="    0.000000"
 DrawSegmentWidth="    0.200000"

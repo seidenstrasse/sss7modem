@@ -39,7 +39,7 @@ encoding utf-8
 Sheet 1 1
 Title "Seidenstrasse Signaling System 7 Modem"
 Date "26 may 2015"
-Rev "0.2"
+Rev "1.0"
 Comp "Telebørken"
 Comment1 ""
 Comment2 ""
