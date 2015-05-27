@@ -65,7 +65,7 @@
     (visible_elements FFFFFFBF)
     (pcbplotparams
       (layerselection 284196865)
-      (usegerberextensions false)
+      (usegerberextensions true)
       (excludeedgelayer true)
       (linewidth 0.150000)
       (plotframeref false)
@@ -84,11 +84,11 @@
       (plotinvisibletext false)
       (padsonsilk false)
       (subtractmaskfromsilk false)
-      (outputformat 2)
+      (outputformat 1)
       (mirror false)
-      (drillshape 2)
+      (drillshape 0)
       (scaleselection 1)
-      (outputdirectory pdfs/))
+      (outputdirectory gerber/))
   )
 
   (net 0 "")
@@ -317,11 +317,11 @@
     )
   )
 
-  (module SM0603 (layer F.Cu) (tedit 5564F85A) (tstamp 5557C940)
+  (module SM0603 (layer F.Cu) (tedit 556580FB) (tstamp 5557C940)
     (at 27.94 41.275 90)
     (path /5557C303)
     (attr smd)
-    (fp_text reference R4 (at 0 -1.905 180) (layer F.SilkS)
+    (fp_text reference R4 (at 0 1.905 180) (layer F.SilkS)
       (effects (font (size 0.75 0.75) (thickness 0.2)))
     )
     (fp_text value 60 (at 0 0 90) (layer F.SilkS) hide
