@@ -11,7 +11,8 @@ The actual application layer will be developed independent of this specification
 
 Physical Layer
 --------------
-The physical layer is based on a RS485 three wire bus (a differential pair for data and ground),
+The physical layer is based on a RS485-like two wire bus 
+(normal RS485 has different levels when idle),
 using the *MCP2551* is used as transceiver chip.
 Since this chip is actually a CAN-transceiver,
 it has a well defined behaviour in case of collisions (no short circuits possible)
@@ -21,7 +22,31 @@ in one transceiver pulling the bus while the other one pulls it high,
 effectively creating a temporary short circuit.
 Therefore using a CAN-transceiver is preferable for our bus configuration.
 
-Using a sss7modem any device with a decent UART (microcontroller, raspi ...) can communicate over long distances (2000m+).
+The MCP2551 requires that the levels of the differential data lines are within +-7V
+of its ground potential.
+This a bit of a problem, since it is not really practical to run an additional wire
+along the bus to provide a common.
+Additionally routers may use power supplies which do not have a floating potential
+(e.g. a computer power supply).
+Connecting the ground rails of two non-floating power supplies can lead to a nasty
+short circuit in the worst case.
+Therefore an isolated DC/DC converter is used to provide a floating supply voltage 
+for the transceiver chip and the data lines are isolated using optocouplers.
+Still a common ground potential for all modes is required for the transceiver chips to work.
+This is solved by adding diodes in inverse direction between the floating 5v rail and both data lines
+and between the chips ground and bot datalines.
+If the potential of the high data line is more than 0.7v above the floating 5v rail,
+on of diodes will become conducting effectively shifting the floating grounds potential up.
+Likewise if the potential of the low data line is more than 0.7v below the floating ground rail,
+the ground rail will be shifted down.
+Hence the floating grounds rails of all modems connected to bus will be within +-0.7v relative to each other
+(not considering the voltage drop over the long wires).
+
+Additionally these diodes suppress voltages spikes on the bus,
+protecting the transceiver.
+
+Using a sss7modem any device with a decent UART (microcontroller, raspi ...) 
+can communicate over long distances (1000m+).
 The data is send at 9600 Baud (aka. 9,6kbit/s) with a maximum baudrate error of +-5%,
 to ensure that even the slowest microcontroller can participate in the communication.
 A slow bitrate also necessary to keep communication and collision detection reliable over longer
@@ -56,8 +81,14 @@ Therefore receiving devices should rely only on the length and the CRC sum of fr
 Licenses
 --------
 
-Anything in the folder hardware/libs/smisitoto_eu/ is taken from http://smisioto.no-ip.org/elettronica/kicad/kicad-en.htm The files are made avaible under the Creative Commons license rev2.5 Attribution-ShareAlike. (see https://creativecommons.org/licenses/by-sa/2.5/)
+Anything in the folder hardware/libs/smisitoto_eu/ is taken from http://smisioto.no-ip.org/elettronica/kicad/kicad-en.htm
+The files are made avaible under the Creative Commons license rev2.5 Attribution-ShareAlike. (see https://creativecommons.org/licenses/by-sa/2.5/)
 
+The Chaos InKL logo is licensed CC BY-NC-SA 3.0.
+
+The seidenstrasse logo and my personal logo are not avaiable under an open licence.
+Therefore you should ask for permission before using the seidenstrasse logo in derived works.
+Also please remove my personal logo if I am not involved in your project.
 
 The schematics and pcb layout files in hardware are released under the *CERN Open Hardware Licence v1.2*.
 
