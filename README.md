@@ -57,9 +57,9 @@ Transport Layer
 ---------------
 A device is allowed to send data after the bus has been idle for at least *48 bit times* (aka. 5ms).
 After this period the sender is allowed to send a single frame.
-The frame format is simply the first byte is the length of the entire frame in bytes (`= N + 3`), 
+The frame format is simple: The first byte is the length of the entire frame in bytes (`= N + 3`), 
 followed by N bytes of payload.
-The remaining 2 bytes of the are a 16bit CRC checksum over the frames payload.
+The remaining 2 bytes are a 16bit CRC checksum over the frames payload.
 If a received frame has timed out or if its CRC sum does not match its payload,
 any receiving devices should assume a collision and drop the frame.
 A frame can be assumed as timed out if it was not fully received yet and no
@@ -73,6 +73,7 @@ If the read byte does not match the written byte, a collision occurred.
 In this case the sender has to wait for random back off interval until attempting a retransmit.
 The back off interval is calculated as `(8 * bit_time) * (priority + rand(1,5))`,
 where `bit_time = 1 / 9600 s` and priority is the frames priority.
+After the backoff interval the bus has to be idle for *48 bit times* before retransmit.
 Device receiving on the bus are not necessarily able to detect collisions,
 unless they show up as timing error at their UART.
 Therefore receiving devices should rely only on the length and the CRC sum of frame to detect collisions.

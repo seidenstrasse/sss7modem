@@ -3,3 +3,6 @@
 _autosave-*
 *.swp
 *.dxf~
+*.pyc
+
+software/python/virtenv
