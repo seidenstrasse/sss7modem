@@ -38,9 +38,9 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Seidenstrasse Signaling System 7 Modem"
-Date "26 may 2015"
+Date "22 jun 2015"
 Rev "1.0"
-Comp "Telebørken"
+Comp "Chaos Seidenstrasse Werke Kaiserslautern"
 Comment1 ""
 Comment2 ""
 Comment3 ""
@@ -321,7 +321,7 @@ L R R7
 U 1 1 555DB78B
 P 5900 4550
 F 0 "R7" V 5980 4550 40  0000 C CNN
-F 1 "R" V 5907 4551 40  0000 C CNN
+F 1 "1k" V 5907 4551 40  0000 C CNN
 F 2 "~" V 5830 4550 30  0000 C CNN
 F 3 "~" H 5900 4550 30  0000 C CNN
 	1    5900 4550
