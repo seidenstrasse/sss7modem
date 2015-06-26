@@ -85,7 +85,7 @@ class SSS7Bus(object):
 			return True
 
 		self._debug("Sucessfully read rest of frame")
-		self._buffer.insert(0,data)
+		self._buffer.insert(0,payload)
 
 		return True
 
@@ -103,6 +103,7 @@ class SSS7Bus(object):
 		for byte in frame:
 			result = self._send_byte(byte)
 			if not result:
+				self._serial.flushInput()
 				self._debug("Sending frame failed with collision")
 				return False
 
@@ -129,8 +130,11 @@ class SSS7Bus(object):
 			result = self._send_frame(frame)
 
 
+	def has_message(self):
+		return len(self._buffer) > 0
+
 	def read_message(self):
-		while len(self._buffer) == 0:
+		while not self.has_message():
 			self._read_frame()
 
 		return self._buffer.pop()
