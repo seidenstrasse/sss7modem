@@ -57,8 +57,12 @@ Transport Layer
 ---------------
 A device is allowed to send data after the bus has been idle for at least *48 bit times* (aka. 5ms).
 After this period the sender is allowed to send a single frame.
-The frame format is simple: The first byte is the length of the entire frame in bytes (`= N + 3`), 
-followed by N bytes of payload.
+The frame format is simple: The first two bytes are a always 0xAAFE.
+This preamble allows the uart to synchronise to the incoming data.
+The bit pattern also increases the chances,
+that a collision of two preambles results in frame error.
+The next byte is the length of the payload in bytes, 
+followed by the actual payload.
 The remaining 2 bytes are a 16bit CRC checksum over the frames payload.
 If a received frame has timed out or if its CRC sum does not match its payload,
 any receiving devices should assume a collision and drop the frame.
@@ -71,13 +75,20 @@ Instead the priority is used to calculate the necessary back off in case of a co
 The sender has to detect collisions by reading back each byte written to the bus immediately after writing it.
 If the read byte does not match the written byte, a collision occurred.
 In this case the sender has to wait for random back off interval until attempting a retransmit.
-The back off interval is calculated as `(8 * bit_time) * (priority + rand(1,5))`,
+The back off interval is calculated as `(timeout * bit_time) * (priority + rand(1,5))`,
 where `bit_time = 1 / 9600 s` and priority is the frames priority.
-After the backoff interval the bus has to be idle for *48 bit times* before retransmit.
-Device receiving on the bus are not necessarily able to detect collisions,
+After the backoff interval the bus has to be idle for *48 bit times* before a retransmit.
+
+Devices receiving on the bus are not necessarily able to detect collisions,
 unless they show up as timing error at their UART.
 Therefore receiving devices should rely only on the length and the CRC sum of frame to detect collisions.
 
+Even though the collision detection theoretically ensures that there are no damaged frames due to collisions,
+there might still be frames with a broken crc sum or wrong length due to electrical interference on the bus.
+For autorouters this should not be a problem since they will need mechanism for acknowledging the successful
+execution of actions anyway.
+Therefore a lost frame will either result in a command not being executed or in command being executed but not acked.
+Both cases can be handled efficiently by the resending the command of no ack was received.
 
 Licenses
 --------
