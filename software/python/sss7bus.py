@@ -7,13 +7,15 @@ from crcmod.predefined import PredefinedCrc
 
 
 # Timings in bit times
-TIMEOUT = 24
-CLEARCHANNEL = 48
+TIMEOUT = 48
+CLEARCHANNEL = 2 * TIMEOUT
 
 
 class SSS7Bus(object):
 
 	def __init__(self, port, baudrate=9600):
+		random.seed()
+
 		self._bit_time = 1.0 / baudrate
 
 		self._serial = serial.Serial(port, baudrate, timeout=self._bit_time * TIMEOUT)
@@ -35,15 +37,15 @@ class SSS7Bus(object):
 		self._flush_input_buffer()
 
 		self._serial.timeout = self._bit_time * CLEARCHANNEL
-		self._debug("Checking if bus is idle for %f seconds" % (self._bit_time * CLEARCHANNEL))
+		self._debug("Checking if bus is idle for %f seconds" % (self._serial.timeout))
 
-		length_byte = self._serial.read(1)
-		if len(length_byte) == 0:
+		first_byte = self._serial.read(1)
+		if len(first_byte) == 0:
 			self._debug("Bus seems idle")
 			return True
 
 		self._debug("Bus is not idle, reading frames")
-		self._read_frame_rest(length_byte)
+		self._read_frame_rest(first_byte)
 
 		return False
 
@@ -52,15 +54,34 @@ class SSS7Bus(object):
 		self._debug("Trying to read a frame from the bus")
 		self._serial.timeout = timeout=self._bit_time * TIMEOUT
 
-		length_byte = self._serial.read(1)
-		if len(length_byte) == 0:
-			self._debug("Timeout reading frame length")
+		first_byte = self._serial.read(1)
+		if len(first_byte) == 0:
+			self._debug("Timeout reading first byte")
 			return False
 
-		return self._read_frame_rest(length_byte)
+		return self._read_frame_rest(first_byte)
 
 
-	def _read_frame_rest(self, length_byte):
+	def _read_frame_rest(self, first_byte):
+		if ord(first_byte) <> 0xAA:
+			self._debug("Wrong first byte: %s" % hex(ord(first_byte)))
+			return False
+
+		second_byte = self._serial.read(1)
+		if len(second_byte) == 0:
+			self._debug("Timeout reading second byte")
+			return False
+
+		if ord(second_byte) <> 0xFE:
+			self._debug("Wrong second byte")
+			return False
+
+
+		length_byte = self._serial.read(1)
+		if len(length_byte) == 0:
+			self._debug("Timeout reading length byte")
+			return False
+
 		length = ord(length_byte) - 1 # we read the size length byte already
 
 		self._serial.timeout = timeout=self._bit_time * TIMEOUT
@@ -103,7 +124,6 @@ class SSS7Bus(object):
 		for byte in frame:
 			result = self._send_byte(byte)
 			if not result:
-				self._serial.flushInput()
 				self._debug("Sending frame failed with collision")
 				return False
 
@@ -119,12 +139,12 @@ class SSS7Bus(object):
 		crc16.update(msg)
 		msg_crc = crc16.digest()
 
-		frame = chr(len(msg) + 3) + msg + msg_crc
+		frame = chr(0xAA) + chr(0xFE) + chr(len(msg) + 3) + msg + msg_crc
 
 		result = self._send_frame(frame)
 
 		while not result:
-			backoff = 8 * self._bit_time * (priority + random.randint(1,5))
+			backoff = TIMEOUT * self._bit_time * (4 + priority + random.randint(1,5))
 			self._debug("Collision occured backing off %f" % backoff)
 			time.sleep(backoff)
 			result = self._send_frame(frame)
