@@ -1,6 +1,6 @@
-update=Wed 27 May 2015 08:47:22 AM CEST
+update=Fri 06 Nov 2015 11:23:45 PM CET
 version=1
-last_client=pcbnew
+last_client=kicad
 [general]
 version=1
 [eeschema]
@@ -92,3 +92,13 @@ LibName19=libs/mfsop6
 LibName20=libs/chaosinkl_silkbot_15_00mm
 LibName21=libs/seidenstrasse_silkbot_15_00mm
 LibName22=logo_hacker_silkbot_10_00mm
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=pdfs/
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
