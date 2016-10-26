@@ -82,7 +82,7 @@ class SSS7Bus(object):
 			self._debug("Timeout reading length byte")
 			return False
 
-		length = ord(length_byte) - 1 # we read the size length byte already
+		length = ord(length_byte) + 2 # Payload length + 2 byte CRC16
 
 		self._serial.timeout = timeout=self._bit_time * TIMEOUT
 
@@ -139,7 +139,7 @@ class SSS7Bus(object):
 		crc16.update(msg)
 		msg_crc = crc16.digest()
 
-		frame = chr(0xAA) + chr(0xFE) + chr(len(msg) + 3) + msg + msg_crc
+		frame = chr(0xAA) + chr(0xFE) + chr(len(msg)) + msg + msg_crc
 
 		result = self._send_frame(frame)
 
