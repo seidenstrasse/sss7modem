@@ -14,7 +14,7 @@ enum sss7State {
 	SSS7_RX_CRC
 };
 
-const uint8_t SSS7_HEADER[] = {0xAA, 0xFE};
+const static uint8_t SSS7_HEADER[] = {0xAA, 0xFE};
 
 #define SSS7_PAYLOAD_SIZE 16
 #define SSS7_RX_BUFFER_COUNT 2
@@ -24,19 +24,19 @@ extern uint8_t sss7_tx_failed;
 extern uint8_t sss7_rx_active_buffer;
 extern uint8_t sss7_rx_oldest_buffer;
 
-void sss7_init();
+void sss7_init(void);
 
-static inline uint8_t sss7_can_send() {
+static inline uint8_t sss7_can_send(void) {
 	return sss7_state == SSS7_IDLE;
 }
 
 void sss7_send(uint8_t msg[SSS7_PAYLOAD_SIZE]);
 
-static inline uint8_t sss7_send_failed() {
+static inline uint8_t sss7_send_failed(void) {
 	return sss7_state != SSS7_IDLE && sss7_tx_failed;
 }
 
-static inline uint8_t sss7_has_received() {
+static inline uint8_t sss7_has_received(void) {
 	return sss7_rx_oldest_buffer < sss7_rx_active_buffer;
 }
 

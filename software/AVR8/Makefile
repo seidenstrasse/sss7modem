@@ -5,7 +5,7 @@ ISPPORT ?= /dev/ttyUSB0
 VERSION = 0.1
 
 HEADERS =
-SRC = main.c
+SRC = main.c sss7.c uart.c
 TARGET = sss7
 OBJDIR = bin
 
