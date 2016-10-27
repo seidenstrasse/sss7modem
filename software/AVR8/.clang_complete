@@ -1,0 +1,2 @@
+-I/usr/avr/include
+-D__AVR_ATmega328__
