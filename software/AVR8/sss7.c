@@ -61,12 +61,12 @@ void sss7_send(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 
 	// Commit to send state
 	sss7_state = SSS7_TX_HEADER;
+	sss7_tx_failed = 0;
 	sss7_send_byte(SSS7_HEADER[0]);
 }
 
 
 ISR(USART_RXC_vect) {
-	PORTB ^= (1 << PB3);
 	uint8_t byte = UDR;
 	uint8_t crc = 0;
 
@@ -120,7 +120,6 @@ ISR(USART_RXC_vect) {
 }
 
 ISR(USART_TXC_vect) {
-	PORTB ^= (1 << PB2);
 
 	if(sss7_tx_last_ack) {
 		uint8_t byte;

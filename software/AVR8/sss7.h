@@ -33,7 +33,7 @@ static inline uint8_t sss7_can_send(void) {
 void sss7_send(uint8_t msg[SSS7_PAYLOAD_SIZE]);
 
 static inline uint8_t sss7_send_failed(void) {
-	return sss7_state != SSS7_IDLE && sss7_tx_failed;
+	return sss7_state == SSS7_IDLE && sss7_tx_failed;
 }
 
 static inline uint8_t sss7_has_received(void) {

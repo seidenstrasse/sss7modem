@@ -4,7 +4,7 @@ ISPPORT ?= /dev/ttyUSB0
 
 VERSION = 0.1
 
-HEADERS =
+HEADERS = sss7.h uart.h
 SRC = main.c sss7.c uart.c
 TARGET = sss7
 OBJDIR = bin
@@ -32,7 +32,7 @@ start:
 	@echo ":: Building for $(AVRMCU)"
 	@echo ":: MCU operating frequency is $(F_CPU)Hz"
 
-$(OBJDIR)/$(AVRMCU)/%.o : %.c $(HEADERS)
+$(OBJDIR)/$(AVRMCU)/%.o : %.c $(HEADERS) Makefile
 	@mkdir -p $$(dirname $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
