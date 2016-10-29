@@ -2,6 +2,8 @@
 
 import sys
 import serial
+import crcmod.predefined
+
 
 def hexdump(data):
     res = ""
@@ -10,27 +12,40 @@ def hexdump(data):
 
     return res
 
-if len(sys.argv) < 2:
-    print "Usage %s <port>" % (sys.argv[0])
-    sys.exit(-1)
-
-ser = serial.Serial(sys.argv[1], 9600, timeout=0.40)
 
 
+def main():
+    if len(sys.argv) < 2:
+        print "Usage %s <port>" % (sys.argv[0])
+        sys.exit(-1)
+
+    ser = serial.Serial(sys.argv[1], 9600, timeout=0.40)
+
+    while True:
+        data = ser.read(19)
+        if data != "" and len(data) != 19:
+            print "No Frame:\t" + hexdump(data)
+
+        header_ok = data.startswith(chr(0xAA) + chr(0xFE))
+
+        line = ""
+        if header_ok:
+            line += "Header Ok       "
+        else:
+            line += "Header not Ok   "
+
+        payload = data[2:18]
+        crc = crcmod.predefined.Crc('crc-8-maxim')
+        crc.update(payload)
+        crc_sum = crc.digest()
+        if data[18] == crc_sum:
+            line += "CRC Ok      "
+        else:
+            line += "CRC not Ok  "
+
+        line += hexdump(data)
+        print line
 
 
-while True:
-    data = ser.read(19)
-    if data != "" and len(data) != 19:
-        print "No Frame:\t" + hexdump(data)
-
-    header_ok = data.startswith(chr(0xAA) + chr(0xFE))
-
-    line = ""
-    if header_ok:
-        line += "Header OK\t"
-    else:
-        line += "Header not OK\t"
-
-    line += hexdump(data)
-    print line
+if __name__ == '__main__':
+    main()
