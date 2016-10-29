@@ -77,7 +77,7 @@ Initial value: 0x0
     unless it is currently receiving a frame.
 - Collision detection on the sender side is done by reading back each sent byte.
 - Collision checking on receiver side, is done by checking the CRC and frame header.
-- If a frame has been started and there are no new bytes received for 20ms,
+- If a frame has been started and there are no new bytes received for 50ms,
     the frame is considered timed out and all received data can be dropped.
 - Incoming messages are stored in a fifo until the application retrieves them.
 - The receive fifo has a size of at least 2 messages.
