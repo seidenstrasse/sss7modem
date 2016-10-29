@@ -58,7 +58,7 @@ Transport Layer
 ### Frame format:
 ``` 0xAA 0xFE <payload 16 bytes> <payload crc 1byte> ```
 
-16 bytes total
+19 bytes total
 
 **Header: 0xAA 0xFE**
 - Choosen emperically to help the Uarts to synchronize
