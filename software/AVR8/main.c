@@ -33,15 +33,14 @@ sei();
 
 while(1) {
 
-    if(sss7_can_send()) {
-        sss7_send(msg);
-    }
+    while(!sss7_can_send());
+    sss7_send(msg);
     while(!sss7_can_send());
     if(sss7_send_failed()) {
         PORTB ^= (1 << PB2);
     }
 
-    _delay_ms(250);
+    _delay_ms(100);
 }
 
 

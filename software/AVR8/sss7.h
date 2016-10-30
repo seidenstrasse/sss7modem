@@ -20,7 +20,7 @@ const static uint8_t SSS7_HEADER[] = {0xAA, 0xFE};
 #define SSS7_RX_BUFFER_COUNT 2
 
 extern volatile enum sss7State sss7_state;
-extern uint8_t sss7_tx_failed;
+extern volatile uint8_t sss7_tx_failed;
 extern uint8_t sss7_rx_active_buffer;
 extern uint8_t sss7_rx_oldest_buffer;
 
@@ -33,7 +33,7 @@ static inline uint8_t sss7_can_send(void) {
 void sss7_send(uint8_t msg[SSS7_PAYLOAD_SIZE]);
 
 static inline uint8_t sss7_send_failed(void) {
-	return sss7_state == SSS7_IDLE && sss7_tx_failed;
+	return sss7_tx_failed;
 }
 
 static inline uint8_t sss7_has_received(void) {

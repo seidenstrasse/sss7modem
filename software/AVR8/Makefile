@@ -1,6 +1,6 @@
 AVRMCU ?= atmega8
 F_CPU ?= 16000000
-ISPPORT ?= /dev/ttyUSB0
+ISPPORT ?= /dev/kaboard
 
 VERSION = 0.1
 

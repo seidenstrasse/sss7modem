@@ -10,7 +10,7 @@ def send_byte(ser, byte):
     ser.write(byte)
     read_byte = ser.read()
     if read_byte != byte:
-        print "Written %s read %s" % (hex(ord(read_byte)), hex(ord(byte)))
+        print "Written %s read %s" % (hex(ord(byte)), hex(ord(read_byte)))
         sys.exit(-1)
 
 

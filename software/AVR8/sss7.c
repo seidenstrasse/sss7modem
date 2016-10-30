@@ -6,7 +6,7 @@
 
 volatile enum sss7State sss7_state;
 
-uint8_t sss7_rx_buffer[2][SSS7_PAYLOAD_SIZE];
+uint8_t sss7_rx_buffer[SSS7_RX_BUFFER_COUNT][SSS7_PAYLOAD_SIZE];
 uint8_t sss7_rx_active_buffer;
 uint8_t sss7_rx_oldest_buffer;
 uint8_t sss7_rx_pos;
@@ -14,7 +14,7 @@ uint8_t sss7_rx_pos;
 uint8_t sss7_tx_buffer[SSS7_PAYLOAD_SIZE];
 uint8_t sss7_tx_pos;
 uint8_t sss7_tx_crc;
-uint8_t sss7_tx_failed;
+volatile uint8_t sss7_tx_failed;
 uint8_t sss7_tx_last_byte;
 uint8_t sss7_tx_last_ack;
 
@@ -74,6 +74,7 @@ ISR(USART_RXC_vect) {
 		case SSS7_IDLE:
 			if(byte == SSS7_HEADER[0]) {
 				sss7_state = SSS7_RX_HEADER;
+				PORTB |= (1 << PB3);
 			}
 			else {
 				sss7_state = SSS7_IDLE;
@@ -101,8 +102,9 @@ ISR(USART_RXC_vect) {
 		case SSS7_RX_CRC:
 			crc = sss7_payload_crc(sss7_rx_buffer[sss7_rx_active_buffer]);
 			if(byte == crc) {
-				sss7_rx_active_buffer = (sss7_rx_active_buffer + 1);
+				sss7_rx_active_buffer = (sss7_rx_active_buffer + 1) % SSS7_RX_BUFFER_COUNT;
 			}
+			PORTB &= ~(1 << PB3);
 			sss7_state = SSS7_IDLE;
 		break;
 
@@ -144,6 +146,9 @@ ISR(USART_TXC_vect) {
 				sss7_send_byte(sss7_tx_crc);
 				sss7_state = SSS7_IDLE;
 			break;
+
+			default:
+			break;
 		}
 	}
 	else {
@@ -156,6 +161,6 @@ ISR(USART_TXC_vect) {
 void sss7_get_received(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 	if(sss7_has_received()) {
 		memcpy(msg, sss7_rx_buffer[sss7_rx_oldest_buffer], SSS7_PAYLOAD_SIZE);
-		sss7_rx_oldest_buffer++;
+		sss7_rx_oldest_buffer = (sss7_rx_oldest_buffer + 1) % SSS7_RX_BUFFER_COUNT;
 	};
 }
