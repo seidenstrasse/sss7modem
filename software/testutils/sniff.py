@@ -21,10 +21,14 @@ def main():
 
     ser = serial.Serial(sys.argv[1], 9600, timeout=0.40)
 
+    data = ""
     while True:
-        data = ser.read(19)
-        if data != "" and len(data) != 19:
+        while data == "":
+            data = ser.read(19)
+
+        if len(data) != 19:
             print "No Frame:\t" + hexdump(data)
+
 
         header_ok = data.startswith(chr(0xAA) + chr(0xFE))
 
@@ -43,7 +47,7 @@ def main():
         else:
             line += "CRC not Ok  "
 
-        line += hexdump(data)
+        line += hexdump(payload)
         print line
 
 

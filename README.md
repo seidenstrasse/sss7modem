@@ -82,7 +82,7 @@ Initial value: 0x0
 - Incoming messages are stored in a fifo until the application retrieves them.
 - The receive fifo has a size of at least 2 messages.
 - If the fifo is full new messages will override the older ones.
-    It is up to the application retrieve message in time.
+    It is up to the application to retrieve message in time.
 - Even if sending was successful, there is still a chance that the receiver could not
     receive the frame due to missing buffer space or not enough processing time to react.
     **Important messages should utilize a ack-mechanism.**
