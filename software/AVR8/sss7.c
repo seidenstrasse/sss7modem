@@ -1,8 +1,8 @@
 #include "sss7.h"
 
-#include <avr/interrupt.h>
-#include <util/crc16.h>
 #include <string.h>
+
+#include "uart.h"
 
 volatile enum sss7State sss7_state;
 
@@ -17,6 +17,7 @@ uint8_t sss7_tx_crc;
 volatile uint8_t sss7_tx_failed;
 uint8_t sss7_tx_last_byte;
 uint8_t sss7_tx_last_ack;
+
 
 void sss7_init(void) {
 	sss7_state = SSS7_IDLE;
@@ -33,19 +34,33 @@ void sss7_init(void) {
 	PORTB |= (1 << PB2) | (1 << PB3);
 }
 
+
 static inline uint8_t sss7_payload_crc(uint8_t buffer[SSS7_PAYLOAD_SIZE]) {
 	uint8_t crc = 0;
-	for(uint8_t i = 0; i < SSS7_PAYLOAD_SIZE; i++) {
-		crc = _crc_ibutton_update(crc, buffer[i]);
+
+	for(uint8_t byte = 0; byte < SSS7_PAYLOAD_SIZE; byte++) {
+		crc = crc ^ buffer[byte];
+		for (uint8_t bit = 0; bit < 8; bit++)
+		{
+			if (crc & 0x01) {
+				crc = (crc >> 1) ^ 0x8C;
+			}
+			else {
+				crc >>= 1;
+			}
+		}
 	}
+	
 	return crc;
 }
+
 
 static inline void sss7_send_byte(uint8_t byte) {
 	sss7_tx_last_ack = 0;
 	sss7_tx_last_byte = byte;
-	UDR = byte;
+	uart_put_byte(byte);
 }
+
 
 void sss7_send(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 	// Check that we can send, because we will overwritte the buffer
@@ -66,8 +81,8 @@ void sss7_send(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 }
 
 
-ISR(USART_RXC_vect) {
-	uint8_t byte = UDR;
+void sss7_process_rx(void) {
+	uint8_t byte = uart_get_byte();
 	uint8_t crc = 0;
 
 	switch(sss7_state) {
@@ -121,8 +136,8 @@ ISR(USART_RXC_vect) {
 	}
 }
 
-ISR(USART_TXC_vect) {
 
+void sss7_process_tx(void) {
 	if(sss7_tx_last_ack) {
 		uint8_t byte;
 		switch(sss7_state) {
@@ -155,8 +170,8 @@ ISR(USART_TXC_vect) {
 		sss7_tx_failed = 1;
 		sss7_state = SSS7_IDLE;
 	}
-
 }
+
 
 void sss7_get_received(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 	if(sss7_has_received()) {

@@ -24,6 +24,10 @@ extern volatile uint8_t sss7_tx_failed;
 extern uint8_t sss7_rx_active_buffer;
 extern uint8_t sss7_rx_oldest_buffer;
 
+void sss7_process_rx(void);
+void sss7_process_tx(void);
+
+
 void sss7_init(void);
 
 static inline uint8_t sss7_can_send(void) {
@@ -39,8 +43,6 @@ static inline uint8_t sss7_send_failed(void) {
 static inline uint8_t sss7_has_received(void) {
 	return sss7_rx_oldest_buffer < sss7_rx_active_buffer;
 }
-
-
 
 void sss7_get_received(uint8_t msg[SSS7_PAYLOAD_SIZE]);
 

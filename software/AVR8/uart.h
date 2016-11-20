@@ -1,7 +1,7 @@
 #ifndef _UART_H_
 #define _UART_H_
 
-
+#include <avr/io.h>
 
 #define BAUD 9600UL
 
@@ -16,5 +16,14 @@
 
 
 void uart_init(void);
+
+static inline uint8_t uart_get_byte(void) {
+    uint8_t byte = UDR;
+    return byte;
+}
+
+static inline void uart_put_byte(uint8_t byte) {
+    UDR = byte;
+}
 
 #endif

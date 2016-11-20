@@ -1,6 +1,7 @@
 #include "uart.h"
 
-#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/crc16.h>
 
 #include "sss7.h"
 
@@ -22,4 +23,13 @@ void uart_init(void) {
 	UCSRA = (1 << RXEN) | (1 << TXC);
 
 	UCSRB |= (1 << TXCIE) | (1 << RXCIE);  // enable tx and rx interrupts
+}
+
+
+ISR(USART_RXC_vect) {
+	sss7_process_rx();
+}
+
+ISR(USART_TXC_vect) {
+	sss7_process_tx();
 }
