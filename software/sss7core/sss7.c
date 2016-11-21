@@ -2,8 +2,6 @@
 
 #include <string.h>
 
-#include "uart.h"
-
 volatile enum sss7State sss7_state;
 
 uint8_t sss7_rx_buffer[SSS7_RX_BUFFER_COUNT][SSS7_PAYLOAD_SIZE];

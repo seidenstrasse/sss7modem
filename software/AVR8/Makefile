@@ -4,8 +4,8 @@ ISPPORT ?= /dev/kaboard
 
 VERSION = 0.1
 
-HEADERS = sss7.h uart.h timer.h
-SRC = main.c sss7.c uart.c timer.c
+HEADERS = ../sss7core/sss7.h uart.h timer.h
+SRC = main.c ../sss7core/sss7.c uart.c timer.c
 TARGET = sss7
 OBJDIR = bin
 
@@ -16,7 +16,7 @@ SIZE = avr-size
 
 OBJ = $(SRC:%.c=$(OBJDIR)/$(AVRMCU)/%.o)
 
-CFLAGS = -Os -Wall -Wstrict-prototypes
+CFLAGS = -I ../sss7core/ -Os -Wall -Wstrict-prototypes
 CFLAGS += -ffunction-sections -fdata-sections
 CFLAGS += -fshort-enums -fpack-struct -funsigned-char -funsigned-bitfields
 CFLAGS += -mmcu=$(AVRMCU) -DF_CPU=$(F_CPU)UL -DVERSION=$(VERSION)

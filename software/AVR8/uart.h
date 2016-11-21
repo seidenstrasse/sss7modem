@@ -17,13 +17,6 @@
 
 void uart_init(void);
 
-static inline uint8_t uart_get_byte(void) {
-    uint8_t byte = UDR;
-    return byte;
-}
 
-static inline void uart_put_byte(uint8_t byte) {
-    UDR = byte;
-}
 
 #endif

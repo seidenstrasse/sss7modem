@@ -31,6 +31,9 @@ void sss7_process_rx(void);
 void sss7_process_tx(void);
 void sss7_process_ticks(uint16_t ticks);
 
+extern void uart_put_byte(uint8_t byte);
+extern uint8_t uart_get_byte(void);
+
 
 void sss7_init(void);
 
