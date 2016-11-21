@@ -25,7 +25,14 @@ void uart_init(void) {
 	UCSRB |= (1 << TXCIE) | (1 << RXCIE);  // enable tx and rx interrupts
 }
 
+uint8_t uart_get_byte(void) {
+    uint8_t byte = UDR;
+    return byte;
+}
 
+void uart_put_byte(uint8_t byte) {
+    UDR = byte;
+}
 ISR(USART_RXC_vect) {
 	sss7_process_rx();
 }
