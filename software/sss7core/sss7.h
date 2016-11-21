@@ -1,7 +1,7 @@
 #ifndef _SSS7_H_
 #define _SSS7_H_
 
-#include "stdint.h"
+#include <stdint.h>
 
 enum sss7State {
 	SSS7_IDLE,

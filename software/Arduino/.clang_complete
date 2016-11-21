@@ -1,0 +1,4 @@
+-I../sss7core
+-I/usr/avr/include
+-D__AVR_ATmega2560__
+-DF_CPU=16000000
