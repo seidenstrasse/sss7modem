@@ -68,4 +68,15 @@ ISR(USART_TXC1_vect) {
 	sss7_process_tx();
 }
 
-//TODO: Setup Timer
+
+void SSS7Wrapper::setupTimer() {
+	TCNT4 = 65535 - 16000;	//Preload for 16000 ticks to overflow
+	TIMSK4 |= (1 << TOIE0);
+	TCCR4B = (1 << CS40);	// Prescaler 1
+}
+
+ISR(TIMER4_OVF_vect) {
+	TCNT4 = 65535 - 16000;	//Preload for 16000 ticks to overflow
+
+	sss7_process_ticks(sss7_timeout_increment);
+}
