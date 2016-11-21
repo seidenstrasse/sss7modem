@@ -14,7 +14,8 @@ OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
 SIZE = avr-size
 
-OBJ = $(SRC:%.c=$(OBJDIR)/$(AVRMCU)/%.o)
+SRC_TMP = $(subst ../,,$(SRC))
+OBJ = $(SRC_TMP:%.c=$(OBJDIR)/$(AVRMCU)/%.o)
 
 CFLAGS = -I ../sss7core/ -Os -Wall -Wstrict-prototypes
 CFLAGS += -ffunction-sections -fdata-sections
@@ -35,6 +36,10 @@ start:
 $(OBJDIR)/$(AVRMCU)/%.o : %.c $(HEADERS) Makefile
 	@mkdir -p $$(dirname $@)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/$(AVRMCU)/sss7core/%.o : ../sss7core/%.c $(HEADERS) Makefile
+		@mkdir -p $$(dirname $@)
+		$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/$(AVRMCU)/$(TARGET).elf : $(OBJ)
 	$(CC) $(LDFLAGS) $+ -o $@
