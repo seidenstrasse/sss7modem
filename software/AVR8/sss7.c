@@ -18,6 +18,8 @@ volatile uint8_t sss7_tx_failed;
 uint8_t sss7_tx_last_byte;
 uint8_t sss7_tx_last_ack;
 
+volatile uint8_t sss7_timeout_counter;
+
 
 void sss7_init(void) {
 	sss7_state = SSS7_IDLE;
@@ -29,9 +31,6 @@ void sss7_init(void) {
 	sss7_tx_pos = 0;
 	sss7_tx_crc = 0;
 	sss7_tx_failed = 0;
-
-	DDRB |= (1 << PB2)| (1 << PB3);
-	PORTB |= (1 << PB2) | (1 << PB3);
 }
 
 
@@ -50,7 +49,7 @@ static inline uint8_t sss7_payload_crc(uint8_t buffer[SSS7_PAYLOAD_SIZE]) {
 			}
 		}
 	}
-	
+
 	return crc;
 }
 
@@ -77,6 +76,7 @@ void sss7_send(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 	// Commit to send state
 	sss7_state = SSS7_TX_HEADER;
 	sss7_tx_failed = 0;
+	sss7_timeout_counter = 0;
 	sss7_send_byte(SSS7_HEADER[0]);
 }
 
@@ -84,12 +84,12 @@ void sss7_send(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 void sss7_process_rx(void) {
 	uint8_t byte = uart_get_byte();
 	uint8_t crc = 0;
+	sss7_timeout_counter = 0;
 
 	switch(sss7_state) {
 		case SSS7_IDLE:
 			if(byte == SSS7_HEADER[0]) {
 				sss7_state = SSS7_RX_HEADER;
-				PORTB |= (1 << PB3);
 			}
 			else {
 				sss7_state = SSS7_IDLE;
@@ -119,7 +119,6 @@ void sss7_process_rx(void) {
 			if(byte == crc) {
 				sss7_rx_active_buffer = (sss7_rx_active_buffer + 1) % SSS7_RX_BUFFER_COUNT;
 			}
-			PORTB &= ~(1 << PB3);
 			sss7_state = SSS7_IDLE;
 		break;
 
@@ -169,6 +168,23 @@ void sss7_process_tx(void) {
 	else {
 		sss7_tx_failed = 1;
 		sss7_state = SSS7_IDLE;
+	}
+}
+
+void sss7_process_ticks(uint16_t ticks) {
+	if(sss7_state != SSS7_IDLE) {
+		sss7_timeout_counter = sss7_timeout_counter + ticks;
+
+		if(sss7_timeout_counter > sss7_timeout) {
+			switch(sss7_state) {
+				case SSS7_TX_HEADER:
+				case SSS7_TX_PAYLOAD:
+				case SSS7_TX_CRC:
+					sss7_tx_failed = 1;
+				default:
+					sss7_state = SSS7_IDLE;
+			}
+		}
 	}
 }
 

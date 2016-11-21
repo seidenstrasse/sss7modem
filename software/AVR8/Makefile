@@ -4,8 +4,8 @@ ISPPORT ?= /dev/kaboard
 
 VERSION = 0.1
 
-HEADERS = sss7.h uart.h
-SRC = main.c sss7.c uart.c
+HEADERS = sss7.h uart.h timer.h
+SRC = main.c sss7.c uart.c timer.c
 TARGET = sss7
 OBJDIR = bin
 
