@@ -48,7 +48,7 @@ static inline uint8_t sss7_send_failed(void) {
 }
 
 static inline uint8_t sss7_has_received(void) {
-	return sss7_rx_oldest_buffer < sss7_rx_active_buffer;
+	return sss7_rx_oldest_buffer != sss7_rx_active_buffer;
 }
 
 void sss7_get_received(uint8_t msg[SSS7_PAYLOAD_SIZE]);
