@@ -60,11 +60,11 @@ uint8_t uart_get_byte() {
 	return UDR1;
 }
 
-ISR(USART_RXC1_vect) {
+ISR(USART1_RX_vect) {
 	sss7_process_rx();
 }
 
-ISR(USART_TXC1_vect) {
+ISR(USART1_TX_vect) {
 	sss7_process_tx();
 }
 

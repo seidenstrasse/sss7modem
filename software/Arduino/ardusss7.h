@@ -15,7 +15,7 @@ class SSS7Wrapper {
 	private:
 		void setupUart();
 		void setupTimer();
-}
+};
 
 extern SSS7Wrapper SSS7;
 
