@@ -28,6 +28,7 @@ def main():
 
         if len(data) != 19:
             print "No Frame:\t" + hexdump(data)
+            continue
 
 
         header_ok = data.startswith(chr(0xAA) + chr(0xFE))
