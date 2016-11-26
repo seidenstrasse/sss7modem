@@ -1,7 +1,12 @@
 #ifndef _SSS7_H_
 #define _SSS7_H_
 
-#include "stdint.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+#include <stdint.h>
 
 enum sss7State {
 	SSS7_IDLE,
@@ -52,5 +57,9 @@ static inline uint8_t sss7_has_received(void) {
 }
 
 void sss7_get_received(uint8_t msg[SSS7_PAYLOAD_SIZE]);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
