@@ -61,7 +61,6 @@ uint8_t uart_get_byte() {
 }
 
 ISR(USART2_RX_vect) {
-	//PORTB ^= (1 << PB7);
 	sss7_process_rx();
 }
 
@@ -71,9 +70,15 @@ ISR(USART2_TX_vect) {
 
 
 void SSS7Wrapper::setupTimer() {
+	TCCR4B = 0;
 	TCNT4 = 65535 - 16000;	//Preload for 16000 ticks to overflow
-	TIMSK4 |= (1 << TOIE0);
+
+	// Take the Timer by force ...
+	TCCR4A = 0;
 	TCCR4B = (1 << CS40);	// Prescaler 1
+	TCCR4C = 0;
+
+	TIMSK4 = (1 << TOIE4);
 }
 
 ISR(TIMER4_OVF_vect) {

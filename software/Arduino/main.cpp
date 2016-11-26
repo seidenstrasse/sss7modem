@@ -28,7 +28,6 @@ void loop() {
 
 
     while(1) {
-
 		Serial.println("Waiting to send");
         while(!SSS7.canSend());
 		Serial.println("Sending ...");
@@ -38,6 +37,14 @@ void loop() {
         if(SSS7.sendFailed()) {
             Serial.println("Send failed");
         }
+
+
+		if(SSS7.hasReceived()) {
+			uint8_t msg1[SSS7_PAYLOAD_SIZE];
+			SSS7.getReceived(msg1);
+			Serial.print("Got data:");
+			Serial.println((char*)msg1);
+		}
 
         _delay_ms(1000);
     }
