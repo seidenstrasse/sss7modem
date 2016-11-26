@@ -108,4 +108,4 @@ flash : all
         -U flash:w:$(OBJDIR)/$(AVRMCU)/$(TARGET).hex
 
 test : flash
-	screen $(ISPPORT) 38400
+	screen $(ISPPORT) 9600

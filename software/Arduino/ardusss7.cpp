@@ -5,7 +5,7 @@
 
 SSS7Wrapper SSS7;
 
-SSS7Wrapper::SSS7Wrapper() {
+void SSS7Wrapper::init() {
 	sss7_init();
 
 	this->setupUart();
@@ -33,38 +33,39 @@ void SSS7Wrapper::getReceived(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 
 
 void SSS7Wrapper::setupUart() {
-	UBRR1H = UBRR_VAL >> 8;		// Setting baudrate
-	UBRR1L = UBRR_VAL & 0xFF;
+	UBRR2H = UBRR_VAL >> 8;		// Setting baudrate
+	UBRR2L = UBRR_VAL & 0xFF;
 
-	UCSR1B = (1 << TXEN1) | (1 << RXEN1); // Enable TX and RX
-	UCSR1C = (1 << UCSZ11) | (1 << UCSZ10);  // Asynchronous 8N1
+	UCSR2B = (1 << TXEN2) | (1 << RXEN2); // Enable TX and RX
+	UCSR2C = (1 << UCSZ21) | (1 << UCSZ20);  // Asynchronous 8N1
 
 	// flush UDR
 	do
 	{
-		UDR1;
+		UDR2;
 	}
-	while (UCSR1A & (1 << RXC1));
+	while (UCSR2A & (1 << RXC2));
 
 	// reset tx and rx complete flags
-	UCSR1A = (1 << RXC1) | (1 << TXC1);
+	UCSR2A = (1 << RXC2) | (1 << TXC2);
 
-	UCSR1B |= (1 << TXCIE1) | (1 << RXCIE1);  // enable tx and rx interrupts
+	UCSR2B |= (1 << TXCIE2) | (1 << RXCIE2);  // enable tx and rx interrupts
 }
 
 void uart_put_byte(uint8_t byte) {
-	UDR1 = byte;
+	UDR2 = byte;
 }
 
 uint8_t uart_get_byte() {
-	return UDR1;
+	return UDR2;
 }
 
-ISR(USART1_RX_vect) {
+ISR(USART2_RX_vect) {
+	//PORTB ^= (1 << PB7);
 	sss7_process_rx();
 }
 
-ISR(USART1_TX_vect) {
+ISR(USART2_TX_vect) {
 	sss7_process_tx();
 }
 

@@ -5,7 +5,7 @@
 
 class SSS7Wrapper {
 	public:
-		SSS7Wrapper();
+		void init();
 		uint8_t canSend();
 		void send(uint8_t msg[SSS7_PAYLOAD_SIZE]);
 		uint8_t sendFailed();
