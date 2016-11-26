@@ -14,7 +14,8 @@ OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
 SIZE = avr-size
 
-OBJ = $(SRC:%.c=$(OBJDIR)/$(AVRMCU)/%.o)
+SRC_TMP = $(subst ../,,$(SRC))
+OBJ = $(SRC_TMP:%.c=$(OBJDIR)/$(AVRMCU)/%.o)
 
 CFLAGS = -I ../sss7core/ -Os -Wall -Wstrict-prototypes
 CFLAGS += -ffunction-sections -fdata-sections
@@ -27,14 +28,18 @@ all: start $(OBJDIR)/$(AVRMCU)/$(TARGET).hex size
 	@echo ":: Done !"
 
 start:
-	@echo "AS5043 demo version $(VERSION)"
-	@echo "=============================="
+	@echo "SSS7 AVR port $(VERSION)"
+	@echo "========================"
 	@echo ":: Building for $(AVRMCU)"
 	@echo ":: MCU operating frequency is $(F_CPU)Hz"
 
 $(OBJDIR)/$(AVRMCU)/%.o : %.c $(HEADERS) Makefile
 	@mkdir -p $$(dirname $@)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/$(AVRMCU)/sss7core/%.o : ../sss7core/%.c $(HEADERS) Makefile
+		@mkdir -p $$(dirname $@)
+		$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)/$(AVRMCU)/$(TARGET).elf : $(OBJ)
 	$(CC) $(LDFLAGS) $+ -o $@
