@@ -1,7 +1,12 @@
 #ifndef _SSS7_H_
 #define _SSS7_H_
 
-#include "stdint.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+#include <stdint.h>
 
 enum sss7State {
 	SSS7_IDLE,
@@ -19,13 +24,13 @@ const static uint16_t sss7_timeout = 50;
 const static uint16_t sss7_timeout_increment = 1;
 
 #define SSS7_PAYLOAD_SIZE 16
-#define SSS7_RX_BUFFER_COUNT 2
+#define SSS7_RX_BUFFER_SIZE 2
 
 
 extern volatile enum sss7State sss7_state;
 extern volatile uint8_t sss7_tx_failed;
-extern uint8_t sss7_rx_active_buffer;
-extern uint8_t sss7_rx_oldest_buffer;
+extern uint8_t sss7_rx_buffer_write;
+extern uint8_t sss7_rx_buffer_read;
 
 void sss7_process_rx(void);
 void sss7_process_tx(void);
@@ -48,9 +53,13 @@ static inline uint8_t sss7_send_failed(void) {
 }
 
 static inline uint8_t sss7_has_received(void) {
-	return sss7_rx_oldest_buffer < sss7_rx_active_buffer;
+	return sss7_rx_buffer_read != sss7_rx_buffer_write;
 }
 
 void sss7_get_received(uint8_t msg[SSS7_PAYLOAD_SIZE]);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
