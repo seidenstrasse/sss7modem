@@ -85,7 +85,7 @@ void sss7_process_rx(void) {
 	uint8_t next_buffer_write = 0;
 	sss7_timeout_counter = 0;
 
-	switch(sss7_state) {
+	switch((int) sss7_state) {
 		case SSS7_IDLE:
 			if(byte == SSS7_HEADER[0]) {
 				sss7_state = SSS7_RX_HEADER;
@@ -141,7 +141,7 @@ void sss7_process_rx(void) {
 void sss7_process_tx(void) {
 	if(sss7_tx_last_ack) {
 		uint8_t byte;
-		switch(sss7_state) {
+		switch((int) sss7_state) {
 			case SSS7_TX_HEADER:
 				sss7_send_byte(SSS7_HEADER[1]);
 				sss7_state = SSS7_TX_PAYLOAD;
@@ -178,7 +178,7 @@ void sss7_process_ticks(uint16_t ticks) {
 		sss7_timeout_counter = sss7_timeout_counter + ticks;
 
 		if(sss7_timeout_counter > sss7_timeout) {
-			switch(sss7_state) {
+			switch((int) sss7_state) {
 				case SSS7_TX_HEADER:
 				case SSS7_TX_PAYLOAD:
 				case SSS7_TX_CRC:

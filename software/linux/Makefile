@@ -5,7 +5,7 @@ OBJDIR = bin
 
 CC = clang
 
-CFLAGS =  -I ../sss7core/ -Os -Wall -Wstrict-prototypes -fPIC
+CFLAGS =  -DSSS7_THREADED -I ../sss7core/ -Os -Wall -Wstrict-prototypes -fPIC
 LDFLAGS = -pthread -Wl,--gc-sections
 
 all: start $(OBJDIR)/libsss7.so $(OBJDIR)/test

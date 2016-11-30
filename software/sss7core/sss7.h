@@ -7,7 +7,9 @@ extern "C" {
 
 #include <stdint.h>
 
-#ifndef sss7_shared_modfier
+#ifdef SSS7_THREADED
+#define sss7_shared_modfier _Atomic
+#else
 #define sss7_shared_modfier volatile
 #endif
 
