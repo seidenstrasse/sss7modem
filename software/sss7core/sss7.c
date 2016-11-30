@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-volatile enum sss7State sss7_state;
+sss7_shared_modfier enum sss7State sss7_state;
 
 uint8_t sss7_rx_buffer[SSS7_RX_BUFFER_SIZE][SSS7_PAYLOAD_SIZE];
 uint8_t sss7_rx_buffer_write;
@@ -12,11 +12,11 @@ uint8_t sss7_rx_pos;
 uint8_t sss7_tx_buffer[SSS7_PAYLOAD_SIZE];
 uint8_t sss7_tx_pos;
 uint8_t sss7_tx_crc;
-volatile uint8_t sss7_tx_failed;
+sss7_shared_modfier uint8_t sss7_tx_failed;
 uint8_t sss7_tx_last_byte;
 uint8_t sss7_tx_last_ack;
 
-volatile uint8_t sss7_timeout_counter;
+sss7_shared_modfier uint8_t sss7_timeout_counter;
 
 
 void sss7_init(void) {

@@ -5,8 +5,13 @@
 extern "C" {
 #endif
 
-
 #include <stdint.h>
+
+#ifndef sss7_shared_modfier
+#define sss7_shared_modfier volatile
+#endif
+
+
 
 enum sss7State {
 	SSS7_IDLE,
@@ -27,10 +32,11 @@ const static uint16_t sss7_timeout_increment = 1;
 #define SSS7_RX_BUFFER_SIZE 2
 
 
-extern volatile enum sss7State sss7_state;
-extern volatile uint8_t sss7_tx_failed;
+extern sss7_shared_modfier enum sss7State sss7_state;
+extern sss7_shared_modfier uint8_t sss7_tx_failed;
 extern uint8_t sss7_rx_buffer_write;
 extern uint8_t sss7_rx_buffer_read;
+
 
 void sss7_process_rx(void);
 void sss7_process_tx(void);
