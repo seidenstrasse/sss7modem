@@ -27,7 +27,7 @@ enum sss7State {
 };
 
 const static uint8_t SSS7_HEADER[] = {0xAA, 0xFE};
-const static uint16_t sss7_timeout = 50;
+const static uint16_t sss7_timeout = 150;
 const static uint16_t sss7_timeout_increment = 1;
 
 #define SSS7_PAYLOAD_SIZE 16

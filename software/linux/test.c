@@ -31,7 +31,7 @@ int main(int argc, char const *argv[]) {
         if(libsss7_send_failed()) {
 			printf("Send failed\n");
         }
-        sleep(2);
+        sleep(5);
     }
 
 

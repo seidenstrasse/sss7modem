@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <termios.h>
 #include <pthread.h>
+#include <sys/time.h>
 
 #include "sss7.h"
 
@@ -18,6 +19,13 @@ pthread_t event_thread;
 pthread_mutex_t state_mutex, rx_buffer_mutex;
 
 int serial_fd;
+
+int get_milliseconds(void) {
+	struct timeval tv;
+	gettimeofday(&tv,NULL);
+	return 	tv.tv_sec * 1000 + tv.tv_usec / 1000;
+}
+
 
 int uart_init(char *serialport) {
 	serial_fd = open(serialport, O_RDWR | O_NOCTTY | O_NDELAY);
@@ -46,7 +54,7 @@ int uart_init(char *serialport) {
 	// No output processing
 	options.c_oflag = 0;
 
-	options.c_cc[VTIME] = 20;
+	options.c_cc[VTIME] = 1;
 	options.c_cc[VMIN] = 0;
 	tcsetattr(serial_fd, TCSAFLUSH, &options);
 
@@ -120,7 +128,9 @@ void uart_put_byte(uint8_t byte) {
 
 void *eventloop(void *arg) {
 	int res = 0;
+	int timestamp = get_milliseconds();
 	while(1) {
+		printf("Loop\n");
 		if(uart_has_tx_byte) {
 			write(serial_fd, &uart_tx_byte, 1);
 			printf("Send %x\n", uart_tx_byte);
@@ -143,6 +153,13 @@ void *eventloop(void *arg) {
 			sss7_process_tx();
 			pthread_mutex_unlock(&state_mutex);
 		}
+
+		pthread_mutex_lock(&state_mutex);
+		int now = get_milliseconds();
+		printf("Ticks: %d\n", now - timestamp);
+		sss7_process_ticks(now - timestamp);
+		timestamp = now;
+		pthread_mutex_unlock(&state_mutex);
 	}
 
 	return NULL;
