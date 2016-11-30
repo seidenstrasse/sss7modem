@@ -1,7 +1,12 @@
 #ifndef _SSS7_H_
 #define _SSS7_H_
 
-#include "stdint.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+#include <stdint.h>
 
 enum sss7State {
 	SSS7_IDLE,
@@ -48,9 +53,13 @@ static inline uint8_t sss7_send_failed(void) {
 }
 
 static inline uint8_t sss7_has_received(void) {
-	return sss7_rx_oldest_buffer < sss7_rx_active_buffer;
+	return sss7_rx_oldest_buffer != sss7_rx_active_buffer;
 }
 
 void sss7_get_received(uint8_t msg[SSS7_PAYLOAD_SIZE]);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

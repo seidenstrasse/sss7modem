@@ -1,0 +1,5 @@
+-I../sss7core
+-I/usr/avr/include
+-I./arduino-1.6.13/hardware/arduino/avr/cores/arduino/
+-D__AVR_ATmega2560__
+-DF_CPU=16000000

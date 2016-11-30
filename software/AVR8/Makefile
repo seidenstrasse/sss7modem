@@ -28,8 +28,8 @@ all: start $(OBJDIR)/$(AVRMCU)/$(TARGET).hex size
 	@echo ":: Done !"
 
 start:
-	@echo "AS5043 demo version $(VERSION)"
-	@echo "=============================="
+	@echo "SSS7 AVR port $(VERSION)"
+	@echo "========================"
 	@echo ":: Building for $(AVRMCU)"
 	@echo ":: MCU operating frequency is $(F_CPU)Hz"
 
