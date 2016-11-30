@@ -4,9 +4,9 @@
 
 volatile enum sss7State sss7_state;
 
-uint8_t sss7_rx_buffer[SSS7_RX_BUFFER_COUNT][SSS7_PAYLOAD_SIZE];
-uint8_t sss7_rx_active_buffer;
-uint8_t sss7_rx_oldest_buffer;
+uint8_t sss7_rx_buffer[SSS7_RX_BUFFER_SIZE][SSS7_PAYLOAD_SIZE];
+uint8_t sss7_rx_buffer_write;
+uint8_t sss7_rx_buffer_read;
 uint8_t sss7_rx_pos;
 
 uint8_t sss7_tx_buffer[SSS7_PAYLOAD_SIZE];
@@ -23,8 +23,8 @@ void sss7_init(void) {
 	sss7_state = SSS7_IDLE;
 
 	sss7_rx_pos = 0;
-	sss7_rx_oldest_buffer = 0;
-	sss7_rx_active_buffer = 0;
+	sss7_rx_buffer_read = 0;
+	sss7_rx_buffer_write = 0;
 
 	sss7_tx_pos = 0;
 	sss7_tx_crc = 0;
@@ -82,6 +82,7 @@ void sss7_send(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 void sss7_process_rx(void) {
 	uint8_t byte = uart_get_byte();
 	uint8_t crc = 0;
+	uint8_t next_buffer_write = 0;
 	sss7_timeout_counter = 0;
 
 	switch(sss7_state) {
@@ -105,7 +106,7 @@ void sss7_process_rx(void) {
 		break;
 
 		case SSS7_RX_PAYLOAD:
-			sss7_rx_buffer[sss7_rx_active_buffer][sss7_rx_pos] = byte;
+			sss7_rx_buffer[sss7_rx_buffer_write][sss7_rx_pos] = byte;
 			sss7_rx_pos++;
 			if(sss7_rx_pos >= SSS7_PAYLOAD_SIZE) {
 				sss7_state = SSS7_RX_CRC;
@@ -113,9 +114,12 @@ void sss7_process_rx(void) {
 		break;
 
 		case SSS7_RX_CRC:
-			crc = sss7_payload_crc(sss7_rx_buffer[sss7_rx_active_buffer]);
-			if(byte == crc) {
-				sss7_rx_active_buffer = (sss7_rx_active_buffer + 1) % SSS7_RX_BUFFER_COUNT;
+			crc = sss7_payload_crc(sss7_rx_buffer[sss7_rx_buffer_write]);
+
+			next_buffer_write = (sss7_rx_buffer_write + 1) % SSS7_RX_BUFFER_SIZE;
+			// Ensure CRC is okay and we don't overwrite other frames
+			if(byte == crc && next_buffer_write != sss7_rx_buffer_read) {
+				sss7_rx_buffer_write = next_buffer_write;
 			}
 			sss7_state = SSS7_IDLE;
 		break;
@@ -189,7 +193,7 @@ void sss7_process_ticks(uint16_t ticks) {
 
 void sss7_get_received(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 	if(sss7_has_received()) {
-		memcpy(msg, sss7_rx_buffer[sss7_rx_oldest_buffer], SSS7_PAYLOAD_SIZE);
-		sss7_rx_oldest_buffer = (sss7_rx_oldest_buffer + 1) % SSS7_RX_BUFFER_COUNT;
+		memcpy(msg, sss7_rx_buffer[sss7_rx_buffer_read], SSS7_PAYLOAD_SIZE);
+		sss7_rx_buffer_read = (sss7_rx_buffer_read + 1) % SSS7_RX_BUFFER_SIZE;
 	};
 }
