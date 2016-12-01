@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]) {
     msg[10] = 'd';
 
 
-    while(1) {
+    //while(1) {
 
         while(!libsss7_can_send());
         libsss7_send(msg);
@@ -32,7 +32,7 @@ int main(int argc, char const *argv[]) {
 			printf("Send failed\n");
         }
         sleep(5);
-    }
+    //}
 
 
 	libsss7_send(msg);
