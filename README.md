@@ -91,7 +91,7 @@ Initial value: 0x0
 ### Planned API
 - **Not final, use with caution**
 - All calls are non-blocking,
-    any real work should be done by ISRs or an eventloop, which is called peridically.
+    any real work should be done by ISRs or an eventloop, which is called periodically.
 
 - **sss7_can_send()**
 
@@ -131,8 +131,8 @@ The files are made avaible under the Creative Commons license rev2.5 Attribution
 
 The Chaos InKL logo is licensed CC BY-NC-SA 3.0.
 
-The seidenstrasse logo and my personal logo are not avaiable under an open licence.
+The seidenstrasse logo and my personal logo are not available under an open license.
 Therefore you should ask for permission before using the seidenstrasse logo in derived works.
 Also please remove my personal logo if I am not involved in your project.
 
-The schematics and pcb layout files in hardware are released under the *CERN Open Hardware Licence v1.2*.
+The schematics and pcb layout files in hardware are released under the *CERN Open Hardware License v1.2*.

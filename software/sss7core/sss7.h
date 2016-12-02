@@ -36,8 +36,8 @@ const static uint16_t sss7_timeout_increment = 1;
 
 extern sss7_shared_modfier enum sss7State sss7_state;
 extern sss7_shared_modfier uint8_t sss7_tx_failed;
-extern uint8_t sss7_rx_buffer_write;
-extern uint8_t sss7_rx_buffer_read;
+extern sss7_shared_modfier uint8_t sss7_rx_buffer_write;
+extern sss7_shared_modfier uint8_t sss7_rx_buffer_read;
 
 
 void sss7_process_rx(void);
