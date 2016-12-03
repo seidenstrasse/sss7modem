@@ -1,7 +1,9 @@
 #ifndef _LIBSSS7_H_
 #define _LIBSSS7_H_
 
-#include "sss7.h"
+#include<stdint.h>
+
+#define LIBSSS7_PAYLOAD_SIZE 16
 
 // See libsss7.c for more detailed descriptions
 
@@ -12,7 +14,7 @@ int libsss7_start(char *serialport);
 int libsss7_can_send(void);
 
 // Send a frame with the payload msg
-void libsss7_send(uint8_t *msg);
+void libsss7_send(uint8_t msg[LIBSSS7_PAYLOAD_SIZE]);
 
 // Check if the last transmission failed
 int libsss7_send_failed(void);

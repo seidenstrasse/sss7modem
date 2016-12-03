@@ -8,8 +8,8 @@
 int main(int argc, char const *argv[]) {
 	libsss7_start("/dev/ttyUSB0");
 
-	uint8_t msg[SSS7_PAYLOAD_SIZE];
-    memset(msg, 0, SSS7_PAYLOAD_SIZE);
+	uint8_t msg[LIBSSS7_PAYLOAD_SIZE];
+    memset(msg, 0, LIBSSS7_PAYLOAD_SIZE);
     msg[0] = 'H';
     msg[1] = 'e';
     msg[2] = 'l';

@@ -15,7 +15,7 @@ start:
 	@echo " SSS7 linux port $(VERSION)"
 	@echo "=========================="
 
-$(OBJDIR)/test : $(OBJDIR)/test.o $(OBJDIR)/sss7core/sss7.o $(OBJDIR)/libsss7.so
+$(OBJDIR)/test : $(OBJDIR)/libsss7.so
 
 $(OBJDIR)/%.o : %.c $(HEADERS) Makefile
 	@mkdir -p $$(dirname $@)
@@ -25,7 +25,7 @@ $(OBJDIR)/sss7core/%.o : ../sss7core/%.c $(HEADERS) Makefile
 		@mkdir -p $$(dirname $@)
 		$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)/%.so : $(OBJDIR)/%.o
+$(OBJDIR)/libsss7.so : $(OBJDIR)/libsss7.o $(OBJDIR)/sss7core/sss7.o
 		@mkdir -p $$(dirname $@)
 		$(CC) $+ -shared $(LDFLAGS) -o $@
 

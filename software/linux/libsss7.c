@@ -11,6 +11,10 @@
 
 #include "sss7.h"
 
+#if LIBSSS7_PAYLOAD_SIZE != SSS7_PAYLOAD_SIZE
+	#error LIBSSS7_PAYLOAD_SIZE is not equal to SSS7_PAYLOAD_SIZE
+#endif
+
 // A state kept a across eventloop iterations to emulate tx complete interrupts
 enum UartTxState {
 	TX_IDLE,		// Idle state
