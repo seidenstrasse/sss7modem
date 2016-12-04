@@ -9,5 +9,17 @@ public class SSS7Test {
 
 		bus.start();
 
+		while(!bus.canSend());
+		bus.send("Hallo Java".getBytes());
+		while(!bus.canSend());
+
+
+		while(!bus.hasReceived());
+		byte[] data  = bus.getReceived();
+		String str = new String(data);
+		System.out.println(str);
+
+
+		bus.stop();
 	}
 }
