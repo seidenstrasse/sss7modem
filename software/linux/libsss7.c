@@ -107,7 +107,7 @@ void *eventloop(void *arg) {
 		// Or read a byte send by somebody else.
 		res = read(serial_fd, &uart_rx_byte, 1);
 		if(res == 1) {
-			printf("Read %x\n", uart_tx_byte);
+			printf("Read %x\n", uart_rx_byte);
 			// Lock mutexes and call rx handler
 			pthread_mutex_lock(&state_mutex);
 			pthread_mutex_lock(&rx_buffer_mutex);

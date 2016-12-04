@@ -11,28 +11,31 @@ int main(int argc, char const *argv[]) {
 	uint8_t msg[LIBSSS7_PAYLOAD_SIZE];
     memset(msg, 0, LIBSSS7_PAYLOAD_SIZE);
     msg[0] = 'H';
-    msg[1] = 'e';
+    msg[1] = 'a';
     msg[2] = 'l';
     msg[3] = 'l';
     msg[4] = 'o';
     msg[5] = ' ';
     msg[6] = 'W';
-    msg[7] = 'o';
-    msg[8] = 'r';
-    msg[9] = 'l';
-    msg[10] = 'd';
+    msg[7] = 'e';
+    msg[8] = 'l';
+    msg[9] = 't';
 
 
-    //while(1) {
+    while(!libsss7_can_send());
+    libsss7_send(msg);
+    while(!libsss7_can_send());
+    if(libsss7_send_failed()) {
+		printf("Send failed\n");
+    }
 
-        while(!libsss7_can_send());
-        libsss7_send(msg);
-        while(!libsss7_can_send());
-        if(libsss7_send_failed()) {
-			printf("Send failed\n");
-        }
-        sleep(5);
-    //}
+	while(!libsss7_has_received());
+	uint8_t tmp[LIBSSS7_PAYLOAD_SIZE + 1];
+	memset(tmp, 0, LIBSSS7_PAYLOAD_SIZE + 1);
+	libsss7_get_received(tmp);
+	printf("Received: %s\n", tmp);
+
+
 
 
 	libsss7_send(msg);
