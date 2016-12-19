@@ -32,15 +32,17 @@ public class SSS7 {
 		this.lib = (NativeSSS7) Native.loadLibrary("libsss7.so", NativeSSS7.class);
 	}
 
-	public boolean start(String serial) {
+	// All methods should be synchronized as libsss7 will a single mutex instance
+	// for all of them
+	public synchronized boolean start(String serial) {
 		return this.lib.libsss7_start(this.serial) == 0;
 	}
 
-	public boolean canSend() {
+	public synchronized boolean canSend() {
 		return this.lib.libsss7_can_send() == 1;
 	}
 
-	public void send(byte[] data) {
+	public synchronized void send(byte[] data) {
 		Pointer p = new Memory(this.payloadLength);
 		for(long i = 0; i < this.payloadLength; i++) {
 			if(i < data.length) {
@@ -54,21 +56,21 @@ public class SSS7 {
 		this.lib.libsss7_send(p);
 	}
 
-	public boolean sendFailed() {
+	public synchronized boolean sendFailed() {
 		return this.lib.libsss7_send_failed() == 1;
 	}
 
-	public boolean hasReceived() {
+	public synchronized boolean hasReceived() {
 		return this.lib.libsss7_has_received() == 1;
 	}
 
-	public byte[] getReceived() {
+	public synchronized byte[] getReceived() {
 		Pointer p = new Memory(this.payloadLength);
 		this.lib.libsss7_get_received(p);
 		return p.getByteArray(0, this.payloadLength);
 	}
 
-	public void stop() {
+	public synchronized void stop() {
 		this.lib.libsss7_stop();
 	}
 }
