@@ -5,9 +5,9 @@ public class SSS7Test {
 
 
 	public static void main(String[] args) {
-		SSS7 bus = new SSS7("/dev/ttyUSB0");
+		SSS7 bus = SSS7.getInstance();
 
-		bus.start();
+		bus.start("/dev/ttyUSB0");
 
 		while(!bus.canSend());
 		bus.send("Hallo Java".getBytes());

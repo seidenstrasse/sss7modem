@@ -4,6 +4,15 @@ import com.sun.jna.Pointer;
 import com.sun.jna.Memory;
 
 public class SSS7 {
+	private static SSS7 instance = null;
+
+	public static SSS7 getInstance() {
+		if(instance == null) {
+			instance = new SSS7();
+		}
+		return instance;
+	}
+
 	private interface NativeSSS7 extends Library {
 		public int libsss7_start(String serialport);
 		public int libsss7_can_send();
@@ -19,12 +28,11 @@ public class SSS7 {
 	private NativeSSS7 lib;
 	private String serial;
 
-	SSS7(String serial) {
+	protected SSS7() {
 		this.lib = (NativeSSS7) Native.loadLibrary("libsss7.so", NativeSSS7.class);
-		this.serial = serial;
 	}
 
-	public boolean start() {
+	public boolean start(String serial) {
 		return this.lib.libsss7_start(this.serial) == 0;
 	}
 
