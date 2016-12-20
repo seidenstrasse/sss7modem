@@ -26,7 +26,6 @@ public class SSS7 {
 	public final int payloadLength = 16;
 
 	private NativeSSS7 lib;
-	private String serial;
 
 	protected SSS7() {
 		this.lib = (NativeSSS7) Native.loadLibrary("libsss7.so", NativeSSS7.class);
@@ -35,7 +34,7 @@ public class SSS7 {
 	// All methods should be synchronized as libsss7 will a single mutex instance
 	// for all of them
 	public synchronized boolean start(String serial) {
-		return this.lib.libsss7_start(this.serial) == 0;
+		return this.lib.libsss7_start(serial) == 0;
 	}
 
 	public synchronized boolean canSend() {
