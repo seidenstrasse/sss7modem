@@ -1,6 +1,6 @@
 AVRMCU ?= atmega2560
 F_CPU ?= 16000000
-ISPPORT ?= /dev/ttyACM0
+ISPPORT ?= /dev/ttyUSB0
 
 VERSION = 0.1
 
@@ -47,7 +47,6 @@ CFLAGS = -I $(ARDU_FULL_DIR) -I $(ARDU_VARIANT_DIR) -I ../sss7core/ -Os -Wall -W
 CFLAGS += -ffunction-sections -fdata-sections
 CFLAGS += -fshort-enums -fpack-struct -funsigned-char -funsigned-bitfields
 CFLAGS += -mmcu=$(AVRMCU) -DF_CPU=$(F_CPU)UL -DVERSION=$(VERSION)
-CFLAGS += -std=c99
 
 CPPFLAGS = -I $(ARDU_FULL_DIR) -I $(ARDU_VARIANT_DIR) -I ../sss7core/ -Os
 CPPFLAGS += -ffunction-sections -fdata-sections
