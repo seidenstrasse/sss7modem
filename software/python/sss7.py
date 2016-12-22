@@ -2,6 +2,7 @@
 
 from ctypes import *
 
+
 LIBSSS7_PATH = "../linux/bin/libsss7.so"
 LIBSSS7_PAYLOAD_SIZE = 16
 
