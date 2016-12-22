@@ -240,9 +240,14 @@ void sss7_process_tx(void) {
 				// Send the crc precalculated by sss_send
 				sss7_send_byte(sss7_tx_crc);
 				// Reset the state to idle
-				sss7_state = SSS7_IDLE;
+				sss7_state = SSS7_TX_FINALIZE;
 			break;
 
+			case SSS7_TX_FINALIZE:
+				//Not much to do here
+				sss7_state = SSS7_IDLE;
+			break;
+			
 			default:
 				// Controlflow should never ever end up here.
 				// Calling the tx handler while being in rx state is messed up.

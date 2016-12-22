@@ -25,6 +25,7 @@ int main(int argc, char const *argv[]) {
     while(!libsss7_can_send());
     libsss7_send(msg);
     while(!libsss7_can_send());
+	printf("Send done\n");
     if(libsss7_send_failed()) {
 		printf("Send failed\n");
     }

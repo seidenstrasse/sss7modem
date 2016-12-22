@@ -27,6 +27,8 @@ enum sss7State {
 	SSS7_TX_CRC,		// Sending the last paylaod by has started,
 						// waiting for the it to complete, to send crc byte
 
+	SSS7_TX_FINALIZE,	// Wait until the crc byte has been read back
+
 	SSS7_RX_HEADER,		// First header byte has been reived, waiting for the second one
 
 	SSS7_RX_PAYLOAD,	// Receiving payload bytes
