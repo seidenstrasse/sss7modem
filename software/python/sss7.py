@@ -57,12 +57,12 @@ class _SSS7(object):
         return tmp == 1
 
     def has_received(self):
-        return _LIB_SSS7.libsss7_get_received()
+        return _LIB_SSS7.libsss7_has_received()
 
     def get_received(self):
-        payload = [0] * LIBSSS7_PAYLOAD_SIZE
+        payload = _SSS7_PAYLOAD_TYPE()
         _LIB_SSS7.libsss7_get_received(payload)
-        return payload
+        return [payload[i] for i in range(0, LIBSSS7_PAYLOAD_SIZE)]
 
     def stop(self):
         _LIB_SSS7.libsss7_stop()

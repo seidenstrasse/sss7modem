@@ -25,10 +25,11 @@ def main():
         print "Send failed"
 
 
-    #while(!bus.hasReceived());
-    #byte[] data  = bus.getReceived();
-    #String str = new String(data);
-    #System.out.println(str);
+    while not SSS7.has_received():
+        sleep(0.1)
+
+    print to_string(SSS7.get_received())
+
 
 
     SSS7.stop()
