@@ -60,11 +60,11 @@ uint8_t uart_get_byte() {
 	return UDR0;
 }
 
-ISR(USART2_RX_vect) {
+ISR(USART0_RX_vect) {
 	sss7_process_rx();
 }
 
-ISR(USART2_TX_vect) {
+ISR(USART0_TX_vect) {
 	sss7_process_tx();
 }
 
@@ -81,7 +81,7 @@ void SSS7Wrapper::setupTimer() {
 	TIMSK1 = (1 << TOIE1);
 }
 
-ISR(TIMER4_OVF_vect) {
+ISR(TIMER1_OVF_vect) {
 	TCNT1 = 65535 - 16000;	//Preload for 16000 ticks to overflow
 
 	sss7_process_ticks(sss7_timeout_increment);
