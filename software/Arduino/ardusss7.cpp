@@ -33,31 +33,31 @@ void SSS7Wrapper::getReceived(uint8_t msg[SSS7_PAYLOAD_SIZE]) {
 
 
 void SSS7Wrapper::setupUart() {
-	UBRR2H = UBRR_VAL >> 8;		// Setting baudrate
-	UBRR2L = UBRR_VAL & 0xFF;
+	UBRR0H = UBRR_VAL >> 8;		// Setting baudrate
+	UBRR0L = UBRR_VAL & 0xFF;
 
-	UCSR2B = (1 << TXEN2) | (1 << RXEN2); // Enable TX and RX
-	UCSR2C = (1 << UCSZ21) | (1 << UCSZ20);  // Asynchronous 8N1
+	UCSR0B = (1 << TXEN0) | (1 << RXEN0); // Enable TX and RX
+	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);  // Asynchronous 8N1
 
 	// flush UDR
 	do
 	{
-		UDR2;
+		UDR0;
 	}
-	while (UCSR2A & (1 << RXC2));
+	while (UCSR0A & (1 << RXC0));
 
 	// reset tx and rx complete flags
-	UCSR2A = (1 << RXC2) | (1 << TXC2);
+	UCSR0A = (1 << RXC0) | (1 << TXC0);
 
-	UCSR2B |= (1 << TXCIE2) | (1 << RXCIE2);  // enable tx and rx interrupts
+	UCSR0B |= (1 << TXCIE0) | (1 << RXCIE0);  // enable tx and rx interrupts
 }
 
 void uart_put_byte(uint8_t byte) {
-	UDR2 = byte;
+	UDR0 = byte;
 }
 
 uint8_t uart_get_byte() {
-	return UDR2;
+	return UDR0;
 }
 
 ISR(USART2_RX_vect) {
@@ -70,19 +70,19 @@ ISR(USART2_TX_vect) {
 
 
 void SSS7Wrapper::setupTimer() {
-	TCCR4B = 0;
-	TCNT4 = 65535 - 16000;	//Preload for 16000 ticks to overflow
+	TCCR1B = 0;
+	TCNT1 = 65535 - 16000;	//Preload for 16000 ticks to overflow
 
 	// Take the Timer by force ...
-	TCCR4A = 0;
-	TCCR4B = (1 << CS40);	// Prescaler 1
-	TCCR4C = 0;
+	TCCR1A = 0;
+	TCCR1B = (1 << CS10);	// Prescaler 1
+	TCCR1C = 0;
 
-	TIMSK4 = (1 << TOIE4);
+	TIMSK1 = (1 << TOIE1);
 }
 
 ISR(TIMER4_OVF_vect) {
-	TCNT4 = 65535 - 16000;	//Preload for 16000 ticks to overflow
+	TCNT1 = 65535 - 16000;	//Preload for 16000 ticks to overflow
 
 	sss7_process_ticks(sss7_timeout_increment);
 }

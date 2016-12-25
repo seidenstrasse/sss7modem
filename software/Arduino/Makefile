@@ -1,4 +1,4 @@
-AVRMCU ?= atmega2560
+AVRMCU ?= atmega328
 F_CPU ?= 16000000
 ISPPORT ?= /dev/ttyUSB0
 
