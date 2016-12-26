@@ -20,9 +20,11 @@ def main():
         sys.exit(-1)
 
     ser = serial.Serial(sys.argv[1], 9600, timeout=0.40)
+    ser.reset_input_buffer()
 
-    data = ""
+
     while True:
+        data = ser.read(19)
         while data == "":
             data = ser.read(19)
 
@@ -32,6 +34,7 @@ def main():
 
 
         header_ok = data.startswith(chr(0xAA) + chr(0xFE))
+
 
         line = ""
         if header_ok:
