@@ -10,7 +10,7 @@ SRC_CPP = main.cpp ardusss7.cpp
 TARGET = sss7
 OBJDIR = bin
 ARDUINO_DIR = ./arduino-1.6.13
-ARDUINO_BOARD = mega
+ARDUINO_BOARD = standard
 
 CC = avr-gcc
 CPP = avr-g++
@@ -103,7 +103,7 @@ clean :
 	@rm -rf $(OBJDIR)
 
 flash : all
-	avrdude -c stk500v2 \
+	avrdude -c arduino -F \
 		-p $(AVRMCU) -P $(ISPPORT) -D \
         -U flash:w:$(OBJDIR)/$(AVRMCU)/$(TARGET).hex
 
