@@ -99,7 +99,7 @@ void *eventloop(void *arg) {
 		// Send a byte, if there is one
 		if(uart_tx_state == TX_HAS_BYTE) {
 			write(serial_fd, &uart_tx_byte, 1);
-			printf("Send %x\n", uart_tx_byte);
+			//printf("Send %x\n", uart_tx_byte);
 			uart_tx_state = TX_COMPLETE;
 		}
 
@@ -107,7 +107,7 @@ void *eventloop(void *arg) {
 		// Or read a byte send by somebody else.
 		res = read(serial_fd, &uart_rx_byte, 1);
 		if(res == 1) {
-			printf("Read %x\n", uart_rx_byte);
+			//printf("Read %x\n", uart_rx_byte);
 			// Lock mutexes and call rx handler
 			pthread_mutex_lock(&state_mutex);
 			pthread_mutex_lock(&rx_buffer_mutex);

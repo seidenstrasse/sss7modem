@@ -6,6 +6,9 @@
 #define LIBSSS7_PAYLOAD_SIZE 16
 
 // See libsss7.c for more detailed descriptions
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // Setup function
 int libsss7_start(char *serialport);
@@ -26,6 +29,12 @@ int libsss7_has_received(void);
 void libsss7_get_received(uint8_t *msg);
 
 // Teardown function
-void libsss7_stop();
+void libsss7_stop(void);
+
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif
